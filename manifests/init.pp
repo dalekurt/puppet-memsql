@@ -79,7 +79,6 @@ class memsql (
     require => Exec['get-memsql-pkg'],
   }
 
-=======
 
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
