@@ -45,7 +45,6 @@ class memsql (
   $memsql_bin_dir = $memsql::params::memsql_bin_dir,
   $memsql_user    = $memsql::params::memsql_user,
   $memsql_group   = $memsql::params::memsql_group
-
 ) inherits memsql::params {
 
   include wget
@@ -53,12 +52,6 @@ class memsql (
 
   $memsql_pkg_name = "memsqlbin_amd64.tar.gz"
   $memsql_pkg      = "${memsql_src_dir}/${memsql_pkg_name}"
-
-
-  file {
-    owner => $memsql_user,
-    group => $memsql_group
-  }
 
   file { $memsql_src_dir:
     ensure => directory,
@@ -80,11 +73,19 @@ class memsql (
     require => Exec['get-memsql-pkg'],
   }
 
-  file { "memsql-init":
-    ensure  => present,
-    path    => "/etc/init.d/memsql",
-    mode    => '0755',
-    content => template('memsql/memsql.init.erb'),
-    notify  => Service["memsql"],
-  }
+#  file { 'memsql-init':
+#    ensure  => present,
+#    path    => "/etc/init.d/memsql",
+#    mode    => '0755',
+#    content => template('memsql/memsql.init.erb'),
+#    notify  => Service["memsql"],
+#  }
+
+#  service { 'memsql':
+#    ensure    => running,
+#    name      => "memsql",
+#    enable    => true,
+#    require   => [ File["memsql-init"],
+#  }
+
 }
