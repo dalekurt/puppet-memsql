@@ -85,7 +85,7 @@ class memsql (
     ensure    => running,
     name      => "memsql",
     enable    => true,
-    require   => [ File["File["memsql-init"] ],
+    require   => [ File["memsql-init"] ],
   }
   
 }
