@@ -73,12 +73,20 @@ class memsql (
     require => Exec['get-memsql-pkg'],
   }
 
-#  file { "memsql-init":
-#    ensure  => present,
-#    path    => "/etc/init.d/memsql",
-#    mode    => '0755',
-#    content => template('memsql/memsql.init.erb'),
-#    notify  => Service["memsql"],
-#  }
+  file { "memsql-init":
+    ensure  => present,
+    path    => "/etc/init.d/memsql",
+    mode    => '0755',
+    content => template('memsql/memsql.init.erb'),
+    notify  => Service["memsql"],
+  }
+  
+  service { "memsql":
+    ensure    => running,
+    name      => "memsql",
+    enable    => true,
+    require   => [ File["File["memsql-init"] ],
+  }
+  
 }
 
