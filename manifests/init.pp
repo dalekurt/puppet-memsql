@@ -73,22 +73,6 @@ class memsql (
     require => Exec['get-memsql-pkg'],
   }
 
-  exec { 'get-memsql-pkg':
-    command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
-    cwd     => $memsql_src_dir,
-    path    => "/usr/bin",
-    unless  => "test -f ${memsql_pkg}",
-    require => File[$memsql_src_dir],
-  }
-
-  exec { 'unpack-memsql':
-    command => "tar --strip-components 1 -xzf ${memsql_pkg}",
-    cwd     => $memsql_src_dir,
-    path    => '/bin:/usr/bin',
-    unless  => "test -f ${memsql_src_dir}/Makefile",
-    require => Exec['get-memsql-pkg'],
-  }
-
 #  file { "memsql-init":
 #    ensure  => present,
 #    path    => "/etc/init.d/memsql",
