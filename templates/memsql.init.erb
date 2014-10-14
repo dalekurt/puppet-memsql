@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# memsql       MemSQL Database
+#
+# chkconfig:   2345 80 30
+# description: MemSQL is the fastest SQL compliant, in-memory, distributed database.
+
+### BEGIN INIT INFO
+# Provides: memsql
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop memsql
+# Description: MemSQL is the fastest SQL compliant, in-memory, distributed database.
+### END INIT INFO
+
+BASE_PATH="<%= scope.lookupvar('memsql::memsql_bin_dir') %>"
+SERVICE_PATH="$BASE_PATH/service"
+INIT_FUNCTIONS_PATH="$BASE_PATH/utils/init_functions.sh"
+LICENSE_FILE="$BASE_PATH/lib/license"
+USER="memsql"
+
+# Load our function library
+source "$INIT_FUNCTIONS_PATH"
+
+update_license() {
+    local unix_ts retval
+    local target=$1
+
+    # make sure it exists
+    if [ ! -f "$target" ]; then
+        echo
+        echo "------------------------------ ERROR ------------------------------"
+        echo "Could not find a license key at the specified path:"
+        echo "  $target"
+        echo
+        echo "Please check that the path is an absolute path to a valid license key."
+        echo "-------------------------------------------------------------------"
+        exit 9
+    fi
+
+    log_daemon_msg "Installing new license"
+
+    # backup existing license
+    unix_ts=`date +%%s`
+    cp --preserve=all "$LICENSE_FILE" "$LICENSE_FILE.$unix_ts.bak"
+
+    # install new license and setup permissions
+    cp "$target" "$LICENSE_FILE" && chown $USER "$LICENSE_FILE" && chmod 600 "$LICENSE_FILE"
+    retval=$?
+    log_end_msg $retval
+    return $retval
+}
+
+usage() {
+    echo "Usage: $0 {start|stop|hardstop|status|restart|check-system|version|update-license 
+path/to/license}"
+    exit 2
+}
+
+[ "$#" -le "2" ] || usage
+
+# parse and execute user command
+case "$1" in
+    start)
+        daemon_start $USER
+        ;;
+    stop)
+        $SERVICE_PATH $1
+        ;;
+    hardstop)
+        $SERVICE_PATH $1
+        ;;
+    restart)
+        daemon_stop
+        daemon_start $USER
+        ;;
+    check-system)
+        $SERVICE_PATH $1
+        ;;
+    status)
+        $SERVICE_PATH $1
+        ;;
+    version)
+        $SERVICE_PATH $1
+        ;;
+    update-license)
+        if [ ! -n "$2" ]
+        then
+            echo "Usage: $0 update-license path/to/license.key"
+            exit 8
+        fi
+        update_license $2
+        ;;
+    *)
+        usage
+esac
+exit $?
