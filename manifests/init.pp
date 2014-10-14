@@ -73,23 +73,6 @@ class memsql (
     require => Exec['get-memsql-pkg'],
   }
 
-<<<<<<< HEAD
-#  file { 'memsql-init':
-#    ensure  => present,
-#    path    => "/etc/init.d/memsql",
-#    mode    => '0755',
-#    content => template('memsql/memsql.init.erb'),
-#    notify  => Service["memsql"],
-#  }
-
-#  service { 'memsql':
-#    ensure    => running,
-#    name      => "memsql",
-#    enable    => true,
-#    require   => [ File["memsql-init"],
-#  }
-
-
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
     cwd     => $memsql_src_dir,
