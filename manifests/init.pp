@@ -1,3 +1,43 @@
+# == Class: memSQL
+#
+# Install memSQL.
+#
+# === Parameters
+#
+# [*version*]
+#   Version to install.
+#
+# [*license*]
+#   License provided by memSQL.
+#
+# [*memsql_src_dir*]
+#   Location to unpack source code before building and installing it.
+#   Default: /opt/memsql-src
+#
+# [*memsql_bin_dir*]
+#   Location to install redis binaries.
+#   Default: /opt/memsql
+#
+# === Examples
+#
+# include redis
+#
+# class { 'memsql':
+#   version        => '3.1',
+#   license        => 'LICENSE_KEY'
+#   memsql_src_dir => '/path/to/memsql-src',
+#   memsql_bin_dir => '/path/to/memsql',
+# }
+#
+# === Authors
+#
+# Dale-Kurt Murray
+#
+# === Copyright
+#
+# Copyright 2014 Dale-Kurt Murray, unless otherwise noted.
+#
+
 class (
   $version        = $memsql::params::version,
   $license        = $memsql::params::license,
