@@ -77,10 +77,10 @@ class memsql (
     ensure => directory,
   }
 
-  file { $memsql_bin_dir:
-    ensure => directory,
-    notify => File['ownership'],
-  }
+#  file { $memsql_bin_dir:
+#    ensure => directory,
+#    notify => File['ownership'],
+#  }
 
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
