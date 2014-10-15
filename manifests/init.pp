@@ -63,6 +63,7 @@ class memsql (
     shell => '/bin/bash',
     home => $memsql_bin_src,
     managehome => 'true',
+    notify  => [ Service['memsql'], Exec['unpack-memsql'] ],
   }
 
   file { 'ownership':
@@ -93,7 +94,7 @@ class memsql (
     cwd     => $memsql_src_dir,
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
-    require => [ Exec['get-memsql-pkg'], user[$memsql_user] ],
+    require => [ Exec['get-memsql-pkg'] ],
   }
 
   file { "memsql-init":
