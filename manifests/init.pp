@@ -53,6 +53,11 @@ class memsql (
   $memsql_pkg_name = "memsqlbin_amd64.tar.gz"
   $memsql_pkg      = "${memsql_src_dir}/${memsql_pkg_name}"
 
+  file {
+    owner => $memsql_user,
+    group => $memsql_group
+  }
+
   file { $memsql_src_dir:
     ensure => directory,
   }
