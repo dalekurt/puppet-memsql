@@ -70,6 +70,7 @@ class memsql (
     group => $memsql_group,
     path  => $memsql_bin_dir,
     mode  => 0700,
+    require => File[$memsql_bin_dir],
   }
 
   file { $memsql_src_dir:
