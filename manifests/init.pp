@@ -93,7 +93,7 @@ class memsql (
     cwd     => $memsql_src_dir,
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
-    require => [ Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
+    require => [ Exec['get-memsql-pkg'] ],
   }
 
   file { "memsql-init":
@@ -108,7 +108,7 @@ class memsql (
     ensure    => running,
     name      => "memsql",
     enable    => true,
-    require   => [ File["memsql-init"], Exec["get-memsql-pkg"], Exec["unpack-memsql"] ],
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
   }
   
 }
