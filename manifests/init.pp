@@ -95,8 +95,7 @@ class memsql (
     cwd     => $memsql_src_dir,
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
-    require => [ Exec['get-memsql-pkg'] ],
-    notify  => File['ownership'],
+    require => [ Exec['get-memsql-pkg'], File['ownership'] ],
   }
 
   file { "memsql-init":
