@@ -57,6 +57,10 @@ class memsql (
     ensure => directory,
   }
 
+  file { $memsql_bin_dir:
+    ensure => directory,
+  }
+
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
     cwd     => $memsql_src_dir,
@@ -66,7 +70,7 @@ class memsql (
   }
 
   exec { 'unpack-memsql':
-    command => "tar --strip-components 1 -xzf ${memsql_pkg}",
+    command => "tar --strip-components 1 -xzf ${memsql_pkg} -C ${memsql_bin_dir}",
     cwd     => $memsql_src_dir,
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
