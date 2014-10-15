@@ -61,8 +61,7 @@ class memsql (
     ensure => present,
     gid => $memsql_group,
     shell => '/bin/bash',
-    home => $memsql_bin_dir,
-    managehome => 'true',
+    managehome => 'false',
     notify  => [ Service['memsql'], Exec['unpack-memsql'] ],
   }
 
@@ -77,9 +76,10 @@ class memsql (
     ensure => directory,
   }
 
-#  file { $memsql_bin_dir:
-#    ensure => directory,
-#  }
+  file { $memsql_bin_dir:
+    ensure => directory,
+    notify => File['ownership'],
+  }
 
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
