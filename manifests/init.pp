@@ -99,7 +99,7 @@ class memsql (
   exec { 'chown':
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin',
-    require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'] ],
+    require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
     returns => [0,1],
   }
 
@@ -115,7 +115,7 @@ class memsql (
     ensure    => running,
     name      => "memsql",
     enable    => true,
-    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['chown'] ],
   }
 
 
