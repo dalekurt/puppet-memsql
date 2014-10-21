@@ -90,7 +90,7 @@ class memsql (
 
   user { $memsql_user:
     ensure => present,
-    shell => '/sbin/nologin',
+    shell => '/usr/sbin/nologin',
   }
 
   exec { 'chown-memsql':
