@@ -69,11 +69,11 @@ class memsql (
     ensure => directory,
   }
 
-  file { $memsql_bin_dir:
+  file { $memsql_bin_dir/:
     ensure  => directory,
-    recurse => true,
-    owner   => "memsql",
-    group   => "memsql",
+    recursive => true,
+    owner   => "${memsql::params::user}",
+    group   => "${memsql::params::group}",
     mode    => "u+rwx",
     notify  => [ Exec['get-memsql-pkg'] ],
   }
