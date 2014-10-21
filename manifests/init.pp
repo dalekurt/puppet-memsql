@@ -105,7 +105,7 @@ class memsql (
     path    => "/etc/init.d/memsql",
     mode    => '0755',
     content => template('memsql/memsql.init.erb'),
-    notify  => Service["memsql"],
+    notify  => [ Service["memsql"], Exec ['chown-memsql'] ],
   }
 
   service { "memsql":
