@@ -38,6 +38,7 @@
 # Copyright 2014 Dale-Kurt Murray, unless otherwise noted.
 #
 
+# Install memSQL from tarball file
 class memsql (
   $version        = $memsql::params::version,
   $license        = $memsql::params::license,
@@ -71,6 +72,7 @@ class memsql (
     notify  => [ Exec['get-memsql-pkg'] ],
   }
 
+  # download memsql from the memsql.com website
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
     cwd     => $memsql_src_dir,
@@ -79,6 +81,7 @@ class memsql (
     require => File[$memsql_src_dir],
   }
 
+  # extract memSQL to the memsql_bin_dir
   exec { 'unpack-memsql':
     command => "tar --strip-components 1 -xzf ${memsql_pkg}",
     cwd     => $memsql_bin_dir,
@@ -88,11 +91,13 @@ class memsql (
     refreshonly => true,
   }
 
+  # crete the memsql user and group
   user { $memsql_user:
     ensure => present,
     shell => '/usr/sbin/nologin',
   }
 
+  # change the permissiona of the memsql installation
   exec { 'chown-memsql':
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin:/usr/bin',
@@ -102,6 +107,7 @@ class memsql (
     refreshonly => true,
   }
 
+  # create the memsql init script
 #  file { "memsql-init":
 #    ensure  => present,
 #    path    => "/etc/init.d/memsql",
@@ -110,6 +116,7 @@ class memsql (
 #    notify  => [ Service["memsql"] ],
 #  }
 
+  # start the memsql daemon using the init script
 #  service { "memsql":
 #    ensure    => running,
 #    name      => "memsql",
