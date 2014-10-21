@@ -57,14 +57,6 @@ class memsql (
     ensure => present,
   }
 
-  user { $memsql_user:
-    ensure => present,
-    gid => $memsql_group,
-    shell => '/bin/bash',
-    managehome => 'false',
-    notify  => [ Exec['unpack-memsql'] ],
-  }
-
   file { $memsql_src_dir:
     ensure => directory,
   }
@@ -93,14 +85,22 @@ class memsql (
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
     require => [ Exec['get-memsql-pkg'], File[ $memsql_bin_dir] ],
-    notify  => [ Exec ['chown'] ],
+  #  notify  => [ Exec ['chown'] ],
+    refreshonly => true,
   }
 
-  exec { 'chown':
+  user { $memsql_user:
+    ensure => present,
+    shell => '/sbin/nologin',
+  }
+
+  exec { 'chown-memsql':
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin',
-  #  require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
-    returns => [0,1],
+    require => [ File[$memsql_bin_dir], User[$memsql_user] ],
+  #  returns => [0,1],
+    subscribe => Exec['unpack-memsql'],
+    refreshonly => true,
   }
 
   file { "memsql-init":
