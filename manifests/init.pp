@@ -109,21 +109,21 @@ class memsql (
   }
 
   # create the memsql init script
-#  file { "memsql-init":
-#    ensure  => present,
-#    path    => "/etc/init.d/memsql",
-#    mode    => '0755',
-#    content => template('memsql/memsql.init.erb'),
-#    notify  => [ Service["memsql"] ],
-#  }
+  file { "memsql-init":
+    ensure  => present,
+    path    => "/etc/init.d/memsql",
+    mode    => '0755',
+    content => template('memsql/memsql.init.erb'),
+    notify  => [ Service["memsql"] ],
+  }
 
   # start the memsql daemon using the init script
-#  service { "memsql":
-#    ensure    => running,
-#    name      => "memsql",
-#    enable    => true,
-#    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['chown-memsql'] ],
-#  }
+  service { "memsql":
+    ensure    => running,
+    name      => "memsql",
+    enable    => true,
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['chown-memsql'] ],
+  }
 
 
 }
