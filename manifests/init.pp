@@ -69,7 +69,7 @@ class memsql (
     ensure => directory,
   }
 
-  file { $memsql_bin_dir/:
+  file { $memsql_bin_dir:
     ensure  => directory,
     recursive => true,
     owner   => "${memsql::params::user}",
