@@ -93,12 +93,13 @@ class memsql (
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
     require => [ Exec['get-memsql-pkg'], File[ $memsql_bin_dir] ],
+    notify  => [ Exec ['chown'] ],
   }
 
   exec { 'chown':
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin',
-    require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
+    require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'] ],
     returns => [0,1],
   }
 
