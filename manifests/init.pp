@@ -65,22 +65,22 @@ class memsql (
     notify  => [ Service['memsql'], Exec['unpack-memsql'] ],
   }
 
-  file { 'ownership':
-    owner => $memsql_user,
-    group => $memsql_group,
-    path  => $memsql_bin_dir,
-    mode  => 0700,
+#  file { 'ownership':
+#    owner => $memsql_user,
+#    group => $memsql_group,
+#    path  => $memsql_bin_dir,
+#    mode  => 0700,
 #    require => File[$memsql_bin_dir],
-  }
+#  }
 
   file { $memsql_src_dir:
     ensure => directory,
   }
 
-#  file { $memsql_bin_dir:
-#    ensure => directory,
-#    notify => File['ownership'],
-#  }
+  file { $memsql_bin_dir:
+    ensure => directory,
+  #  notify => Exec['get-memsql-pkg'],
+  }
 
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
@@ -91,27 +91,28 @@ class memsql (
   }
 
   exec { 'unpack-memsql':
-    command => "tar --strip-components 1 -xzf ${memsql_pkg} -C ${memsql_bin_dir}",
-    cwd     => $memsql_src_dir,
+    command => "tar --strip-components 1 -xzf ${memsql_pkg}",
+    cwd     => $memsql_bin_dir,
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
-    require => [ Exec['get-memsql-pkg'], File['ownership'] ],
+    require => [ Exec['get-memsql-pkg'] ],
   }
 
-  file { "memsql-init":
-    ensure  => present,
-    path    => "/etc/init.d/memsql",
-    mode    => '0755',
-    content => template('memsql/memsql.init.erb'),
-    notify  => Service["memsql"],
-  }
-  
-  service { "memsql":
-    ensure    => running,
-    name      => "memsql",
-    enable    => true,
-    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
-  }
-  
+#  file { "memsql-init":
+#    ensure  => present,
+#    path    => "/etc/init.d/memsql",
+#    mode    => '0755',
+#    content => template('memsql/memsql.init.erb'),
+#    notify  => Service["memsql"],
+#  }
+
+#  service { "memsql":
+#    ensure    => running,
+#    name      => "memsql",
+#    enable    => true,
+#    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
+#  }
+
+
 }
 
