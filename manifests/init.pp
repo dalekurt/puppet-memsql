@@ -98,7 +98,7 @@ class memsql (
   exec { 'chown':
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin',
-    require => [ File[ $memsql_bin_dir], Exec[ unpack-memsql] ],
+    require => [ File[ $memsql_bin_dir], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
     returns => [0,1],
   }
 
