@@ -71,16 +71,13 @@ class memsql (
 
   file { $memsql_bin_dir:
     ensure => directory,
-  #  notify => Exec['get-memsql-pkg'],
+    recurse => true,
+    owner   => "memsql",
+    group   => "memsql",
+    mode    => 0644,
+    notify => Exec['get-memsql-pkg'],
   }
 
-  file { 'ownership':
-    owner => $memsql_user,
-    group => $memsql_group,
-    path  => $memsql_bin_dir,
-    mode  => 0700,
-    require => File[$memsql_bin_dir],
-  }
 
   exec { 'get-memsql-pkg':
     command => "wget http://download.memsql.com/${license}/${memsql_pkg_name}",
