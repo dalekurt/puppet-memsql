@@ -95,6 +95,12 @@ class memsql (
     require => [ Exec['get-memsql-pkg'], File[ $memsql_bin_dir] ],
   }
 
+  exec { 'chown':
+    command => chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir},
+    path    => '/bin',
+    require => [ File[ $memsql_bin_dir], Exec[ unpack-memsql] ],
+  }
+
   file { "memsql-init":
     ensure  => present,
     path    => "/etc/init.d/memsql",
