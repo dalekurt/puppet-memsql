@@ -85,7 +85,6 @@ class memsql (
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
     require => [ Exec['get-memsql-pkg'], File[ $memsql_bin_dir] ],
-  #  notify  => [ Exec ['memsql-chown'] ],
     refreshonly => true,
   }
 
@@ -115,7 +114,7 @@ class memsql (
     ensure    => running,
     name      => "memsql",
     enable    => true,
-    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['memsql-chown'] ],
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['chown-memsql'] ],
   }
 
 
