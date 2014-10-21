@@ -62,7 +62,7 @@ class memsql (
     gid => $memsql_group,
     shell => '/bin/bash',
     managehome => 'false',
-    notify  => [ Service['memsql'], Exec['unpack-memsql'] ],
+    notify  => [ Exec['unpack-memsql'] ],
   }
 
 #  file { 'ownership':
