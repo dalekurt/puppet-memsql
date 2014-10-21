@@ -115,7 +115,7 @@ class memsql (
     ensure    => running,
     name      => "memsql",
     enable    => true,
-    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'], Exec['chown'] ],
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql', Exeec['chown']], Exec['chown'] ],
   }
 
 
