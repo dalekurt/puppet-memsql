@@ -74,7 +74,7 @@ class memsql (
     recursive => true,
     owner   => "${memsql::params::user}",
     group   => "${memsql::params::group}",
-    mode    => "u+rwx",
+    mode    => "0664",
     notify  => [ Exec['get-memsql-pkg'] ],
   }
 
