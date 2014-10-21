@@ -72,7 +72,7 @@ class memsql (
   file { $memsql_bin_dir:
     ensure  => directory,
     recurse => true,
-    purge   => true,
+    #purge   => true,
     owner   => $memsql_user,
     group   => $memsql_group,
     mode    => "0664",
