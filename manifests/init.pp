@@ -65,14 +65,6 @@ class memsql (
     notify  => [ Exec['unpack-memsql'] ],
   }
 
-#  file { 'ownership':
-#    owner => $memsql_user,
-#    group => $memsql_group,
-#    path  => $memsql_bin_dir,
-#    mode  => 0700,
-#    require => File[$memsql_bin_dir],
-#  }
-
   file { $memsql_src_dir:
     ensure => directory,
   }
@@ -80,6 +72,14 @@ class memsql (
   file { $memsql_bin_dir:
     ensure => directory,
   #  notify => Exec['get-memsql-pkg'],
+  }
+
+  file { 'ownership':
+    owner => $memsql_user,
+    group => $memsql_group,
+    path  => $memsql_bin_dir,
+    mode  => 0700,
+    require => File[$memsql_bin_dir],
   }
 
   exec { 'get-memsql-pkg':
