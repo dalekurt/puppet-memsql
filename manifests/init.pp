@@ -99,7 +99,8 @@ class memsql (
 
   # change the permissiona of the memsql installation
   exec { 'chown-memsql':
-    command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
+    #command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
+    command => 'chown -R memsql:memsql /opt/memsql',
     path    => '/bin:/usr/bin',
     require => [ File[$memsql_bin_dir], User[$memsql_user] ],
     returns => [0,1],
