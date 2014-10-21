@@ -85,7 +85,6 @@ class memsql (
     path    => '/bin:/usr/bin',
     unless  => "test -f ${memsql_src_dir}/Makefile",
     require => [ Exec['get-memsql-pkg'], File[ $memsql_bin_dir] ],
-    refreshonly => true,
   }
 
   user { $memsql_user:
@@ -98,7 +97,6 @@ class memsql (
     path    => '/bin',
     require => [ File[$memsql_bin_dir], User[$memsql_user] ],
   #  returns => [0,1],
-    subscribe => Exec['unpack-memsql'],
     refreshonly => true,
   }
 
