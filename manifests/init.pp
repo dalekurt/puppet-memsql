@@ -99,7 +99,7 @@ class memsql (
     command => 'chown -R ${memsql_user}:${memsql_group} ${memsql_bin_dir}',
     path    => '/bin',
     require => [ File[ $memsql_bin_dir], Exec[ unpack-memsql] ],
-    returns => [0],
+    returns => [0,1],
   }
 
   file { "memsql-init":
