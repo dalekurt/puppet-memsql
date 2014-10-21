@@ -73,8 +73,8 @@ class memsql (
     ensure  => directory,
     recurse => true,
     purge   => true,
-    owner   => "${memsql::params::user}",
-    group   => "${memsql::params::group}",
+    owner   => "${memsql::params::memsql_user}",
+    group   => "${memsql::params::memsql_group}",
     mode    => "0664",
     notify  => [ Exec['get-memsql-pkg'] ],
   }
