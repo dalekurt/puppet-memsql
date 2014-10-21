@@ -74,7 +74,7 @@ class memsql (
     recurse => true,
     owner   => "memsql",
     group   => "memsql",
-    mode    => 0644,
+    mode    => "u+rwx",
     notify => Exec['get-memsql-pkg'],
   }
 
@@ -95,20 +95,20 @@ class memsql (
     require => [ Exec['get-memsql-pkg'] ],
   }
 
-#  file { "memsql-init":
-#    ensure  => present,
-#    path    => "/etc/init.d/memsql",
-#    mode    => '0755',
-#    content => template('memsql/memsql.init.erb'),
-#    notify  => Service["memsql"],
-#  }
+  file { "memsql-init":
+    ensure  => present,
+    path    => "/etc/init.d/memsql",
+    mode    => '0755',
+    content => template('memsql/memsql.init.erb'),
+    notify  => Service["memsql"],
+  }
 
-#  service { "memsql":
-#    ensure    => running,
-#    name      => "memsql",
-#    enable    => true,
-#    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
-#  }
+  service { "memsql":
+    ensure    => running,
+    name      => "memsql",
+    enable    => true,
+    require   => [ File['memsql-init'], Exec['get-memsql-pkg'], Exec['unpack-memsql'] ],
+  }
 
 
 }
