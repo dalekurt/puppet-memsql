@@ -71,7 +71,8 @@ class memsql (
 
   file { $memsql_bin_dir:
     ensure  => directory,
-    recursive => true,
+    recurse => true,
+    purge   => true,
     owner   => "${memsql::params::user}",
     group   => "${memsql::params::group}",
     mode    => "0664",
