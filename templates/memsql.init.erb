@@ -19,7 +19,7 @@ BASE_PATH="<%= scope.lookupvar('memsql::memsql_bin_dir') %>"
 SERVICE_PATH="$BASE_PATH/service"
 INIT_FUNCTIONS_PATH="$BASE_PATH/utils/init_functions.sh"
 LICENSE_FILE="$BASE_PATH/lib/license"
-USER="memsql"
+USER="<%= scope.lookupvar('memsql::memsql_user') %>"
 
 # Load our function library
 source "$INIT_FUNCTIONS_PATH"
@@ -54,7 +54,7 @@ update_license() {
 }
 
 usage() {
-    echo "Usage: $0 {start|stop|hardstop|status|restart|check-system|version|update-license 
+    echo "Usage: $0 {start|stop|hardstop|status|restart|check-system|version|update-license
 path/to/license}"
     exit 2
 }
